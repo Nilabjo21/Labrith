@@ -67,8 +67,21 @@ A build is only accepted when all five verification gates pass:
 The system provides a FastAPI service that streams agent activity in real time:
 
 - `POST /runs` — Validates input against `schemas/input.schema.json` and verifies OpenAPI spec reachability. If invalid, returns a clear `400 Bad Request` with itemised reasons and starts **no** agents. If valid, generates a unique `run_id`, initializes workspace in background, and returns `201 Created`.
+
+  **Request body fields:**
+  | Field | Type | Required | Description |
+  |---|---|---|---|
+  | `brief` | string | ✓ | Plain-language product description |
+  | `api_spec_url` | string (URL) or inline OpenAPI 3 JSON | ✓ | Backend API description |
+  | `target` | `"dashboard"` \| `"form_app"` \| `"mixed"` | ✓ | Type of interface to generate |
+  | `style_hints` | array of strings | — | e.g. `["minimal", "dark"]` |
+  | `required_flows` | array of strings | — | QA flows; Planner derives them if absent |
+  | `max_iterations` | integer | — | Per-task budget (default `3`) |
+
+  **Success response (`201`):** `{"run_id": "run-xxxx", "status": "running"}`
+
 - `GET /runs/{run_id}` — Returns the current status (`running`, `accepted`, `partial`, `failed`), preview URL, and full `quality_report.json` upon completion.
-- `GET /runs/{run_id}/events` — Server-Sent Events (SSE) streaming append-only trace entries from `trace.jsonl` in real time, concluding with `event: end`.
+- `GET /runs/{run_id}/events` — Server-Sent Events (SSE) streaming append-only trace entries from `trace.jsonl` in real time, concluding with `event: end`. Each event is a JSON object matching the proof-of-work schema.
 - `GET /runs` — Lists historical runs and their completion statuses.
 - `GET /health` — Health check endpoint (`{"status": "ok"}`).
 - `GET /` — Serves the React Control UI bundle from `web/dist`.
