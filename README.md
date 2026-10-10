@@ -129,6 +129,29 @@ The web workspace contains a production-grade React + TypeScript + Vite + Tailwi
 
 ---
 
+## Configuration
+
+All configuration is via environment variables in `.env` (copy from `.env.example`). Never commit real keys.
+
+| Variable | Required | Description |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | One of these is required | API key for Anthropic (Claude models) |
+| `OPENAI_API_KEY` | One of these is required | API key for OpenAI (GPT models) |
+| `GEMINI_API_KEY` | One of these is required | API key for Google Gemini |
+| `GROQ_API_KEY` | One of these is required | API key for Groq |
+| `PLANNER_MODEL` | No (default in `.env.example`) | LLM model string used by the Planner agent |
+| `DESIGNER_MODEL` | No | LLM model string used by the Design Architect |
+| `ENGINEER_MODEL` | No | LLM model string used by the Component Engineer |
+| `INTEGRATION_MODEL` | No | LLM model string used by the Integration Agent |
+| `QA_MODEL` | No | LLM model string used by the QA Agent |
+| `CRITIC_MODEL` | No | LLM model string used by the Accessibility & Design Critic |
+| `MAX_ITERATIONS` | No (default: `5`) | Global iteration budget cap across all agents |
+| `LLM_TIMEOUT_SECONDS` | No (default: `60`) | Per-call LLM timeout in seconds |
+
+All LLM calls go through `lib/llm.py`. Model selection per agent is read from these variables so you can mix providers (e.g. a stronger model for the Engineer, a cheaper one for the Critic) without touching agent code.
+
+---
+
 ## Running Tests
 Run the comprehensive test suite with `pytest`:
 
