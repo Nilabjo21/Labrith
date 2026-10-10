@@ -40,14 +40,16 @@ Brief + OpenAPI spec
 ## The Six Cooperating Agents
 FrontForge enforces strict separation of concerns across six autonomous agents communicating through a shared blackboard state (Design Doc §3 & §4):
 
-| Agent | Role | Proof of Work Attached |
-|---|---|---|
-| **Planner (Supervisor)** | Formulates task plans, reasons over blackboard state, routes workflows, triggers replanning and escalations. | Plan DAG, routing decision and justification |
-| **Design Architect** | Selects design tokens, responsive layouts, color palettes, and component inventory. | Design spec JSON, critic revision notes |
-| **Component Engineer** | Writes React, TypeScript, and Tailwind code with automated compilation and build tests. | Code diff, passing `npm run build` log |
-| **Integration Agent** | Generates typed API clients, spins up mock servers, and binds UI to OpenAPI endpoints. | Generated client, contract mismatch report |
-| **QA Agent** | Runs end-to-end user flows in a real headless browser (Playwright) and captures evidence. | Test run results, screenshot paths, console logs |
-| **Accessibility & Design Critic** | Audits WCAG 2.1 AA compliance (axe-core) and performance/UX scores (Lighthouse). | Accessibility audit report, Lighthouse scores |
+| Agent | Role | Key Tools | Proof of Work Attached |
+|---|---|---|---|
+| **Planner (Supervisor)** | Formulates task plans, reasons over blackboard state, routes workflows, triggers replanning and escalations. | Spec parser, task queue, shared state | Plan DAG, routing decision and justification |
+| **Design Architect** | Selects design tokens, responsive layouts, color palettes, and component inventory. | Token generator, screenshot viewer (vision model) | Design spec JSON, critic revision notes |
+| **Component Engineer** | Writes React, TypeScript, and Tailwind code with automated compilation and build tests. | File writer, `npm run build`, linter, type checker | Code diff, passing `npm run build` log |
+| **Integration Agent** | Generates typed API clients, spins up mock servers, and binds UI to OpenAPI endpoints. | OpenAPI reader (`tools/openapi.py`), mock server (`tools/mock_server.py`), HTTP client | Generated client, contract mismatch report |
+| **QA Agent** | Runs end-to-end user flows in a real headless browser (Playwright) and captures evidence. | Playwright (`tools/playwright_runner.py`), screenshots, console log capture | Test run results, screenshot paths, console logs |
+| **Accessibility & Design Critic** | Audits WCAG 2.1 AA compliance (axe-core) and performance/UX scores (Lighthouse). | axe-core (`tools/axe_runner.py`), Lighthouse (`tools/lighthouse_runner.py`), vision model | Accessibility audit report, Lighthouse scores |
+
+Every agent output **must** carry a proof-of-work record validated against `schemas/proof.schema.json`. The Planner rejects any handoff without one.
 
 ---
 
