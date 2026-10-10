@@ -169,15 +169,36 @@ All LLM calls go through `lib/llm.py`. Model selection per agent is read from th
 Run the comprehensive test suite with `pytest`:
 
 ```bash
-# Run all API unit tests (validation, 400 errors, lifecycle, SSE streaming)
-pytest tests/unit/test_api.py -v
-
-# Run the full end-to-end pipeline test across all 6 agents
-pytest tests/e2e/test_e2e.py -v
-
-# Run all unit tests
+# Run all unit tests (validation, state, routing, gates, proof-of-work)
 pytest tests/unit/ -v
+
+# Run agent behaviour tests (each agent with mocked LLM via tests/fakes.py)
+pytest tests/agents/ -v
+
+# Run routing and loop-limit tests (scripted fake LLM)
+pytest tests/routing/ -v
+
+# Run the full end-to-end pipeline test (uses a real model — requires API keys in .env)
+pytest tests/e2e/ -v
+
+# Run everything except e2e
+pytest tests/unit/ tests/agents/ tests/routing/ -v
 ```
+
+The `tests/fakes.py` module provides a scripted fake LLM for unit and agent tests so no real API key is needed for most of the suite.
+
+---
+
+## Troubleshooting
+
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| `POST /runs` returns `422` | Request body fails JSON schema validation | Check required fields: `brief`, `api_spec_url`, `target` |
+| `POST /runs` returns `400` | `api_spec_url` is unreachable or not valid OpenAPI 3 | Verify the URL is reachable and returns a valid spec |
+| `playwright install` fails | Playwright not installed | Run `pip install playwright` then `playwright install chromium` |
+| `npm run build` fails in `web/` | Node modules not installed | Run `npm install` inside `web/` first |
+| LLM calls time out | `LLM_TIMEOUT_SECONDS` too low or network issue | Increase `LLM_TIMEOUT_SECONDS` in `.env` |
+| Agent loop hits iteration limit | `MAX_ITERATIONS` exhausted | Run status becomes `partial`; check `quality_report.json` `unresolved` field for details |
 
 ---
 
