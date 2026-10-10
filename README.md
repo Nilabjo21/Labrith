@@ -88,8 +88,9 @@ The web workspace contains a production-grade React + TypeScript + Vite + Tailwi
 ## Setup & Getting Started
 
 ### Prerequisites
-- Python 3.11+
-- Node.js 18+ & npm
+- Python **3.11+** (3.11 or 3.12 recommended; check with `python --version`)
+- Node.js **18+** & npm (check with `node --version`)
+- Git
 
 ### Installation
 1. Clone the repository:
@@ -109,16 +110,21 @@ The web workspace contains a production-grade React + TypeScript + Vite + Tailwi
    ```bash
    pip install -r requirements.txt
    ```
-4. Build the React Control UI:
+4. Install Playwright browsers (required for QA agent):
+   ```bash
+   playwright install chromium
+   ```
+5. Build the React Control UI:
    ```bash
    cd web
    npm install
    npm run build
    cd ..
    ```
-5. Configure environment variables (optional for offline demo):
+6. Configure environment variables (optional for offline demo):
    ```bash
    cp .env.example .env
+   # Edit .env and add your API keys (see Configuration section below)
    ```
 
 ---
