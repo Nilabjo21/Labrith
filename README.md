@@ -10,6 +10,33 @@ FrontForge is built with LangGraph (Python) and orchestrates six cooperating AI 
 
 ---
 
+## Architecture
+
+FrontForge uses the **supervisor-over-blackboard** pattern (see `docs/DESIGN.md` §4):
+
+- The **Planner** is the supervisor. It writes a task plan to the shared state and, after each handoff, reads every agent's output to decide the next step. It never writes code or judges quality.
+- All other agents are **workers**. They read from the shared state, do their work using dedicated tools, and write back their output with a **proof-of-work record**. Workers never call each other directly.
+- The **shared state** (`graph/state.py`) is the single source of truth — design tokens, past errors, task statuses, and all agent outputs live there.
+- Routing is LLM-driven and handled in `graph/routing.py`, with hard iteration limits to prevent infinite loops.
+- Every agent message, routing decision, and proof-of-work record is appended to `trace.jsonl` by `lib/trace.py`.
+
+```
+Brief + OpenAPI spec
+        │
+    ┌───▼───┐
+    │Planner│  (supervisor)
+    └───┬───┘
+        │  reads/writes shared state
+   ┌────┴─────────────────────────────────┐
+   │  Designer │ Engineer │ Integration   │
+   │  QA       │ Critic                   │
+   └──────────────────────────────────────┘
+        │
+    quality_report.json + trace.jsonl
+```
+
+---
+
 ## The Six Cooperating Agents
 FrontForge enforces strict separation of concerns across six autonomous agents communicating through a shared blackboard state (Design Doc §3 & §4):
 
