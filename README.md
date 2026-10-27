@@ -1,6 +1,10 @@
  # FrontForge (Labrith)
 
-FrontForge is a multi-agent system (LangGraph, Python) that acts as a collaborative frontend engineering team. Given a product brief and an OpenAPI spec, it plans, designs, builds, integrates, tests, and reviews a React + TypeScript + Tailwind web application and delivers it with a verified quality report.
+> **Multi-agent frontend generation system** — give it a product brief and an OpenAPI spec and it returns a deployed React + TypeScript + Tailwind app with a verified quality report.
+
+FrontForge is built with LangGraph (Python) and orchestrates six cooperating AI agents that mirror a real frontend team: planning, design, implementation, API integration, browser testing, and accessibility review. Every agent decision is recorded in an append-only trace so the full reasoning is auditable.
+
+**Target users:** Solo AI developers, hackathon teams, and early-stage startups with a working backend but no frontend capacity.
 
 **Live Stable Deployment URL:** [https://frontforge-demo.loca.lt](https://frontforge-demo.loca.lt) (Local: `http://localhost:8000`)
 
