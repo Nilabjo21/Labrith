@@ -199,7 +199,7 @@ The `tests/fakes.py` module provides a scripted fake LLM for unit and agent test
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| `POST /runs` returns `422` | Request body fails JSON schema validation | Check required fields: `brief`, `api_spec_url`, `target` |
+| `POST /runs` returns `400` | Request body is malformed or fails validation | Check required fields: `brief`, `api_spec_url`, `target` |
 | `POST /runs` returns `400` | `api_spec_url` is unreachable or not valid OpenAPI 3 | Verify the URL is reachable and returns a valid spec |
 | `playwright install` fails | Playwright not installed | Run `pip install playwright` then `playwright install chromium` |
 | `npm run build` fails in `web/` | Node modules not installed | Run `npm install` inside `web/` first |
