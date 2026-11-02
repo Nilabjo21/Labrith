@@ -86,6 +86,7 @@ The system provides a FastAPI service that streams agent activity in real time:
 - `GET /api/sample-input` — Returns the sample request used to prefill the Control UI, making it available to API clients as well.
 - `GET /health` — Health check endpoint (`{"status": "ok"}`).
 - `GET /` — Serves the React Control UI bundle from `web/dist`.
+- `/docs` and `/redoc` — Interactive Swagger UI and ReDoc API references; `/openapi.json` serves the generated OpenAPI document.
 
 ---
 
