@@ -81,7 +81,7 @@ The system provides a FastAPI service that streams agent activity in real time:
   **Success response (`201`):** `{"run_id": "run-xxxx", "status": "running"}`
 
 - `GET /runs/{run_id}` — Returns the current status (`running`, `accepted`, `partial`, `failed`), preview URL, and full `quality_report.json` upon completion.
-- `GET /runs/{run_id}/events` — Server-Sent Events (SSE) streaming append-only trace entries from `trace.jsonl` in real time, concluding with `event: end`. Each event is a JSON object matching the proof-of-work schema.
+- `GET /runs/{run_id}/events` — Server-Sent Events (SSE) streaming append-only trace entries from `trace.jsonl` in real time. Each `trace` event's `data` is one JSONL entry; entries are not necessarily proof-of-work records. The stream concludes with an `end` event containing the run status and final report.
 - `GET /runs` — Lists runs held in the service's in-memory registry and their completion statuses.
 - `GET /api/sample-input` — Returns the sample request used to prefill the Control UI, making it available to API clients as well.
 - `GET /health` — Health check endpoint (`{"status": "ok"}`).
