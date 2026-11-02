@@ -83,6 +83,7 @@ The system provides a FastAPI service that streams agent activity in real time:
 - `GET /runs/{run_id}` — Returns the current status (`running`, `accepted`, `partial`, `failed`), preview URL, and full `quality_report.json` upon completion.
 - `GET /runs/{run_id}/events` — Server-Sent Events (SSE) streaming append-only trace entries from `trace.jsonl` in real time, concluding with `event: end`. Each event is a JSON object matching the proof-of-work schema.
 - `GET /runs` — Lists historical runs and their completion statuses.
+- `GET /api/sample-input` — Returns the sample request used to prefill the Control UI, making it available to API clients as well.
 - `GET /health` — Health check endpoint (`{"status": "ok"}`).
 - `GET /` — Serves the React Control UI bundle from `web/dist`.
 
