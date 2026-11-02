@@ -130,6 +130,7 @@ The web workspace contains a production-grade React + TypeScript + Vite + Tailwi
    ```
 4. Install Playwright browsers (required for QA agent):
    ```bash
+   pip install playwright
    playwright install chromium
    ```
 5. Build the React Control UI:
