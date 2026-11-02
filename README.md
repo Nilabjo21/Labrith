@@ -252,6 +252,8 @@ docker run -p 8000:8000 frontforge
 5. Once completed, navigate to **Quality Report & Preview** to inspect the 5 verification gates and click **Open Live Preview**.
 
 ### Via `curl`:
+The example below uses Bash-style line continuations. In Windows PowerShell, use the native PowerShell example that follows; `curl` there is an alias for `Invoke-WebRequest`.
+
 ```bash
 # 1. Trigger a run
 curl -X POST http://localhost:8000/runs \
@@ -272,6 +274,31 @@ curl http://localhost:8000/runs/run-xxxx
 
 # 3. Stream live trace events
 curl -N http://localhost:8000/runs/run-xxxx/events
+```
+
+### Via PowerShell:
+```powershell
+# 1. Trigger a run
+$body = @{
+  brief = "A support dashboard where agents view open tickets, filter by priority, open a ticket to read its history, and reply."
+  api_spec_url = "https://demo-backend.example.com/openapi.json"
+  target = "dashboard"
+  style_hints = @("minimal", "data-dense")
+  required_flows = @("list tickets", "filter by priority", "open ticket detail", "send reply")
+  max_iterations = 3
+} | ConvertTo-Json -Depth 5
+
+$run = Invoke-RestMethod -Method Post `
+  -Uri "http://localhost:8000/runs" `
+  -ContentType "application/json" `
+  -Body $body
+$run
+
+# 2. Check run status and quality report
+Invoke-RestMethod -Uri "http://localhost:8000/runs/$($run.run_id)"
+
+# 3. Stream live trace events
+curl.exe -N "http://localhost:8000/runs/$($run.run_id)/events"
 ```
 
 ---
