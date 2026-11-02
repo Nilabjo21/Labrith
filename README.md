@@ -115,9 +115,14 @@ The web workspace contains a production-grade React + TypeScript + Vite + Tailwi
    ```bash
    python -m venv .venv
    # Windows PowerShell:
-   .venv\Scripts\Activate.ps1
+   .\.venv\Scripts\Activate.ps1
    # Linux / macOS:
    source .venv/bin/activate
+   ```
+   If PowerShell blocks activation, allow scripts for the current PowerShell process only, then retry:
+   ```powershell
+   Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+   .\.venv\Scripts\Activate.ps1
    ```
 3. Install Python dependencies:
    ```bash
